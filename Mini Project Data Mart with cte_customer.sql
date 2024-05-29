@@ -116,81 +116,83 @@ select
 from 
 	cte_datamart
 
---SOAL 1 'Melihat Pendapatan Sewa dari Film berdasarkan:'
--- 1a 'Frekuensi Peminjaman'
---select 
---	distinct(title)
---	, sum(amount) as pendapatan_sewa
---from
---	cte_datamart
---group by
--- 	1
---order by 
---	1
 
--- 1b 'Rating Film'
---select 
---	distinct(rating)
---	, round(sum(amount)) as pendapatan_sewa
---from
---	cte_datamart
---group by
--- 	1
---order by 
---	1
+	===============
+1. View rental income from movies based on
+'1a. Movie Title.'
+select 
+	distinct(title)
+	, sum(amount) as pendapatan_sewa
+from
+	cte_datamart
+group by
+ 	1
+order by 
+	1
 
--- 1c 'Kategori Film'
---select 
---	distinct(kategori_film)
---	, round(sum(amount)) as pendapatan_sewa
---from
---	cte_datamart
---group by
--- 	1
---order by 
---	1
+ 1b 'Movie Rating'
+select 
+	distinct(rating)
+	, round(sum(amount)) as pendapatan_sewa
+from
+	cte_datamart
+group by
+ 	1
+order by 
+	1
 
---SOAL 2 'Melakukan Segmentasi Customer'
---2a 'Frekuensi Peminjaman'
---select 
---	first_name
---	, last_name
---	, count(title) as frekuensi_peminjaman
---	, case
---	  when count(title) >= 30 then 'high'
---	  when count(title) <= 30 then 'low'
---	end as frekuensi peminjaman
---from
---	cte_datamart
---group by 1, 2
---order by 3
+ 1c 'Movie Category'
+select 
+	distinct(kategori_film)
+	, round(sum(amount)) as pendapatan_sewa
+ from
+	cte_datamart
+group by
+ 	1
+order by 
+	1
 
---2b 'Total Biaya Sewa'
---select 
---	first_name
---	, last_name
---	, sum(amount) as total_biaya_sewa
---from 
---	cte_datamart
---group by
---	1, 2
---order by 
---	3
+ 2 'Conduct customer segmentation'
+'2a. Borrowing Frequency'
+select 
+	first_name
+	, last_name
+	, count(title) as frekuensi_peminjaman
+	, case
+	  when count(title) >= 30 then 'high'
+	  when count(title) <= 30 then 'low'
+	end as frekuensi peminjaman
+from
+	cte_datamart
+  group by 1, 2
+  order by 3
 
---2c 'Jenis film yang sering disewa (kategori dan rating film)'
---select
---    kategori_film
---    , rating
---    , count(*) as total_rentals
---from
---    cte_datamart
---group by
---    1, 2
---order by
---    3 desc
+'b. Total Rental Cost'
+select 
+	first_name
+	, last_name
+	, sum(amount) as total_biaya_sewa
+from 
+	cte_datamart
+group by
+	1, 2
+order by 
+	3
+
+'2c. Types of movies that are often rented (movie category and movie rating)'
+select
+    kategori_film
+    , rating
+    , count(*) as total_rentals
+from
+    cte_datamart
+group by
+    1, 2
+order by
+    3 desc
    
---SOAL 3 'Melihat Informasi Keterlambatan sewa'
---3a 'Film yang paling sering terlambat'
+'3. View late rental information such as'
+'3a. Movies that are returned late most often'
 select
     title
     , rental_duration
@@ -206,10 +208,10 @@ having
 order by
     3 desc
 
---3b 'Berapa jumlah pembatalan dalam periode tertentu'
---select
---    count(film_id) AS jumlah_pembatalan
---from
---	cte_datamart
---where 
---	tanggal_pengembalian is null
+'3b. How many cancelations in a certain period'
+select
+    count(film_id) AS jumlah_pembatalan
+from
+	cte_datamart
+where 
+	tanggal_pengembalian is null
